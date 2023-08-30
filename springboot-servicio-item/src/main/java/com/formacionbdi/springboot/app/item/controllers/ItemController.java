@@ -30,7 +30,7 @@ public class ItemController {
     return itemService.findAll();
   }
 
-  @HystrixCommand(raiseHystrixExceptions = { HystrixException.RUNTIME_EXCEPTION }, fallbackMethod = "metodoAlternativo")
+  @HystrixCommand( fallbackMethod = "metodoAlternativo")
   @GetMapping("/ver/{id}/cantidad/{cantidad}")
   public Item detalle(@PathVariable Long id, @PathVariable Integer cantidad) {
     return itemService.findById(id, cantidad);

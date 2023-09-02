@@ -2,6 +2,7 @@ package com.formacionbdi.springboot.app.zuul.filters;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,9 @@ import com.netflix.zuul.exception.ZuulException;
  * PerTiempoTranscurridoFilter
  */
 @Component
-public class PreTiempoTranscurridoFilter extends ZuulFilter {
+public class PostTiempoTranscurridoFilter extends ZuulFilter {
 
-  private static org.slf4j.Logger log = LoggerFactory.getLogger(PreTiempoTranscurridoFilter.class);
+  private static Logger log = LoggerFactory.getLogger(PostTiempoTranscurridoFilter.class);
 
   @Override
   public boolean shouldFilter() {
@@ -32,18 +33,22 @@ public class PreTiempoTranscurridoFilter extends ZuulFilter {
     RequestContext ctx = RequestContext.getCurrentContext();
     HttpServletRequest request = ctx.getRequest();
 
-    log.info(String.format("%s request enrutado a %s", request.getMethod(), request.getRequestURL().toString()));
+    log.info("Entrando a Post filter");
 
-    Long tiempoInicio = System.currentTimeMillis();
-    request.setAttribute("tiempoInicio", tiempoInicio);
+    Long tiempoInicio = (Long) request.getAttribute("tiempoInicio");
+    Long tiempoFinal = System.currentTimeMillis();
+    Long tiempoTranscurrido = tiempoFinal - tiempoInicio;
+
+    log.info(String.format("Tiempo transcurrido en segundos %s seg", tiempoTranscurrido.doubleValue() / 1000.00));
+    log.info(String.format("Tiempo transcurrido en miliseg %s ms", tiempoTranscurrido));
     return null;
   }
 
   @Override
   public String filterType() {
     // Se define el tipo de filtro a través de un String
-    // con las palabras clave "pre", "post" y "route"
-    return "pre";
+    // con las palabras clave "pre", "post", "route" y "error"
+    return "post";
   }
 
   @Override

@@ -8,6 +8,13 @@ spring:
             - Path=/api/productos/**
           filters:
             - StripPrefix=2 # la ruta está compuesta por 2 segmentos
+            # - name: Ejemplo # Corresponde al prefijo del nombre de la clase del filtro factory
+            #   args: 
+            #     mensaje: Hola mi mensaje personalizado
+            #     cookieNombre: usuario
+            #     cookieValor: NicolasChicaiza
+            # otra forma de definir filtros
+            - EjemploCookie=Hola mi mensaje personalizado, usuario, NicolasChicaiza
         - id: servicio-items
           uri: lb://servicio-items
           predicates:

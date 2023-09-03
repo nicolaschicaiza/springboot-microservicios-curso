@@ -53,6 +53,8 @@ public class ItemController {
     logger.info(e.getMessage());
     Item item = new Item();
     Producto producto = new Producto();
+
+    item.setCantidad(cantidad);
     producto.setId(id);
     producto.setNombre("Camara Sony");
     producto.setPrecio(500.00);

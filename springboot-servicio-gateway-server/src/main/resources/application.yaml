@@ -6,6 +6,13 @@ spring:
           uri: lb://servicio-productos
           predicates:
             - Path=/api/productos/**
+            # - Header=token, \d+ # nombre de cabecera, valor
+            # - Header=Content-Type, application/json
+            # - Method=GET, POST, PUT, DELETE
+            # - Query=color # nombre de cabecera, valor; si no específica valor acepta cualquiera
+            # - Cookie=color, azul
+            # Para concer más sobre todos los predicates de fabrica en:
+            # https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gateway-request-predicates-factories
           filters:
             - StripPrefix=2 # la ruta está compuesta por 2 segmentos
             # - name: Ejemplo # Corresponde al prefijo del nombre de la clase del filtro factory

@@ -8,9 +8,22 @@ spring:
             - Path=/api/productos/**
           filters:
             - StripPrefix=2 # la ruta está compuesta por 2 segmentos
+            # - name: Ejemplo # Corresponde al prefijo del nombre de la clase del filtro factory
+            #   args: 
+            #     mensaje: Hola mi mensaje personalizado
+            #     cookieNombre: usuario
+            #     cookieValor: NicolasChicaiza
+            # otra forma de definir filtros
+            - EjemploCookie=Hola mi mensaje personalizado, usuario, NicolasChicaiza
         - id: servicio-items
           uri: lb://servicio-items
           predicates:
             - Path=/api/items/**
           filters:
             - StripPrefix=2 # la ruta está compuesta por 2 segmentos
+            - AddRequestHeader=token-request, 123456 # nombre de la cookie, valor de la cookie
+            - AddResponseHeader=token-response, 654321 # nombre de la cookie, valor de la cookie
+            - SetResponseHeader=Content-type, text/plain # nombre de la cookie, valor de la cookie
+            - AddRequestParameter=nombre, Nicolas # nombre de la cookie, valor de la cookie
+            # Para concer más sobre todos los filtros de fabrica en:
+            # https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gatewayfilter-factories

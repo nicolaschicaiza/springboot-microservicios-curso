@@ -1,5 +1,7 @@
 package com.formacionbdi.springboot.app.gateway.filters.factory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -40,7 +42,34 @@ public class EjemploGatewayFilterFactory
 
       }));
     };
+
+    // Agregar orden a los filtros
+    // return new OrderedGatewayFilter((exchange, chain) -> {
+    //
+    // logger.info("Ejecutando pre gateway filter factory: " + config.mensaje);
+    // return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+    //
+    // Optional.ofNullable(config.cookieValor).ifPresent(cookie -> {
+    // exchange.getResponse().addCookie(ResponseCookie.from(config.cookieNombre,
+    // cookie).build());
+    //
+    // });
+    //
+    // logger.info("Ejecutando post gateway filter factory: " + config.mensaje);
+    //
+    // }));
+    // }, 2);
   }
+
+  @Override
+  public String name() {
+    return "EjemploCookie";
+  }
+
+  @Override
+  public List<String> shortcutFieldOrder() {
+    return Arrays.asList("mensaje", "cookieNombre", "cookieValor");
+  };
 
   public static class Configuracion {
     private String mensaje;

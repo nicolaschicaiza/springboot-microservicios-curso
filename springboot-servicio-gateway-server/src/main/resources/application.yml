@@ -1,3 +1,28 @@
+resilience4j:
+  circuitbreaker:
+    configs:
+      defecto:
+        sliding-window-size: 6
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 20s
+        permitted-number-of-calls-in-half-open-state: 4
+        # Llamadas lentas
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+    instances:
+      productos:
+        base-config: defecto
+
+  # Time out
+  timelimiter:
+    configs:
+      defecto:
+        timeout-duration: 2s # Para que no ocurra timeout debe superar slow-call-duration-threshold
+    instances:
+      productos:
+        base-config: defecto
+
+
 spring:
   cloud:
     gateway:
@@ -14,6 +39,11 @@ spring:
             # Para concer más sobre todos los predicates de fabrica en:
             # https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gateway-request-predicates-factories
           filters:
+            - name: CircuitBreaker
+              args:
+                name: productos
+                statusCodes: 500 # 500,404
+                fallbackUri: forward:/api/items/ver/8/cantidad/3 # camino alternativo al statusCodes
             - StripPrefix=2 # la ruta está compuesta por 2 segmentos
             # - name: Ejemplo # Corresponde al prefijo del nombre de la clase del filtro factory
             #   args: 

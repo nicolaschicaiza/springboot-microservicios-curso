@@ -18,6 +18,8 @@ import com.formacionbdi.springboot.app.item.models.Producto;
 import com.formacionbdi.springboot.app.item.models.service.ItemService;
 // import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 /**
  * ItemController
  */
@@ -42,11 +44,17 @@ public class ItemController {
     return itemService.findAll();
   }
 
-  // @HystrixCommand(fallbackMethod = "metodoAlternativo")
   @GetMapping("/ver/{id}/cantidad/{cantidad}")
   public Item detalle(@PathVariable Long id, @PathVariable Integer cantidad) {
     return cbFactory.create("items").run(() -> itemService.findById(id, cantidad),
         e -> metodoAlternativo(id, cantidad, e));
+  }
+
+  // Configuración por anotación solo funciona via archivo yml o properties
+  @CircuitBreaker(name = "items", fallbackMethod = "metodoAlternativo") // nombre de la instancia application.yml
+  @GetMapping("/ver2/{id}/cantidad/{cantidad}")
+  public Item detalle2(@PathVariable Long id, @PathVariable Integer cantidad) {
+    return itemService.findById(id, cantidad);
   }
 
   public Item metodoAlternativo(Long id, Integer cantidad, Throwable e) {

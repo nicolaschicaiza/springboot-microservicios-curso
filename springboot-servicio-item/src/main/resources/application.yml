@@ -17,7 +17,7 @@ resilience4j:
   timelimiter:
     configs:
       defecto:
-        timeout-duration: 6s # Para que no ocurra timeout debe superar slow-call-duration-threshold
+        timeout-duration: 2s # Para que no ocurra timeout debe superar slow-call-duration-threshold
     instances:
       items:
         base-config: defecto

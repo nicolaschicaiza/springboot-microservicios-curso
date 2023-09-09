@@ -60,6 +60,7 @@ public class ItemController {
   }
 
   // Configuración por anotación solo funciona via archivo yml o properties
+  @CircuitBreaker(name = "items", fallbackMethod = "metodoAlternativo2") // nombre de la instancia application.yml
   @TimeLimiter(name = "items", fallbackMethod = "metodoAlternativo2") // nombre de la instancia application.yml
   @GetMapping("/ver3/{id}/cantidad/{cantidad}")
   public CompletableFuture<Item> detalle3(@PathVariable Long id, @PathVariable Integer cantidad) {
